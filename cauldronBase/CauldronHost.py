@@ -4,7 +4,8 @@ from sqlalchemy.orm import relationship
 from Base import Base
 from helpers import to_json
 from Base import ma
-from CauldronGroupHostAssoc import CauldronGroupHostAssocSchema
+from marshmallow import fields
+#from CauldronGroupHostAssoc import CauldronGroupHostAssocSchema
 
 class CauldronHost(Base):
     __tablename__ = "CauldronHost"
@@ -12,10 +13,10 @@ class CauldronHost(Base):
     ip = Column(String);
     groups = relationship("CauldronGroupHostAssoc", back_populates = "host") 
     def __repr__(self):
-        return "CAULDRONHOST: " + str(self.id) + ", " + self.ip
+        return "CAULDRONHOST: " + str(self.id) + ", " + self.ip  + ", " + str(self.groups)
 
 class CauldronHostSchema(ma.Schema):
     class Meta:
         fields = ('id', 'ip', 'groups')
-    groups = ma.Nested(CauldronGroupHostAssocSchema)
+    groups = ma.Nested("CauldronGroupHostAssocSchema", many = True)
 

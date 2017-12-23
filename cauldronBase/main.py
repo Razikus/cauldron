@@ -41,6 +41,7 @@ def getHosts():
     result = session.query(CauldronHost).all()
     session.commit()
     cauldronHostsSchema = CauldronHostSchema(many = True)
+    cauldronGroupHostAssocSchema = CauldronGroupHostAssocSchema(many = True)
     dump = cauldronHostsSchema.dump(result)
     return jsonify(dump.data)
 

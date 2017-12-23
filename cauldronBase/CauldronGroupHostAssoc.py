@@ -12,6 +12,8 @@ class CauldronGroupHostAssoc(Base):
 
     group = relationship("CauldronGroup", back_populates = "hosts")
     host = relationship("CauldronHost", back_populates = "groups")
+    def __repr__(self):
+        return "CAULDRONGROUPHOSTASSOC: " + str(self.host_id) + ", " + str(self.group_id)
 
 class CauldronGroupHostAssocSchema(ma.Schema):
     class Meta:
