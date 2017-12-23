@@ -17,5 +17,5 @@ class CauldronGroupHostAssoc(Base):
 
 class CauldronGroupHostAssocSchema(ma.Schema):
     class Meta:
-        fields = ('host_id', 'group_id')
+        fields = ('host', 'group')
 
