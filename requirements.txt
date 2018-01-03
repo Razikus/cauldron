@@ -2,3 +2,5 @@ Flask==0.12.2
 SQLAlchemy==1.1.15
 jsonify
 flask-marshmallow
+pyCLI
+requests

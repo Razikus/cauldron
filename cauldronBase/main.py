@@ -26,19 +26,33 @@ def createSchema():
     createDBSchema(engine)
     return constructOKStatus()
 
+@app.route("/host/<host>/<group>", methods=["DELETE"])
+@app.route("/host/<host>", defaults = {'group' : None}, methods=["DELETE"])
+def removeHost(host, group):
+    session = SessionMaker()
+    removeHostFromBase(session, hostName = host, groupName = group)
+    session.commit()
+    return constructOKStatus()
 
-@app.route("/host/<host>", defaults = {'group' : None}, methods=["GET"])
-@app.route("/host/<host>/<group>", methods=["GET"])
+def removeHostFromBase(session, hostName, groupName = None):
+    session.add(host)
+
+@app.route("/host/<host>/<group>", methods=["POST"])
+@app.route("/host/<host>", defaults = {'group' : None}, methods=["POST"])
 def addHost(host, group):
     session = SessionMaker()
     addHostToBase(session, hostName = host, groupName = group)
     session.commit()
     return constructOKStatus()
 
-@app.route("/host", methods=["GET"])
-def getHosts():
+@app.route("/host", defaults = {'group' : None}, methods=["GET"])
+@app.route("/host/<group>", methods=["GET"])
+def getHosts(group):
     session = SessionMaker()
-    result = session.query(CauldronHost).all()
+    if group is not None:
+        result = session.query(CauldronHost).all()
+    else:
+        result = session.query(CauldronHost).all()
     session.commit()
     cauldronHostsSchema = CauldronHostSchema(many = True)
     cauldronGroupHostAssocSchema = CauldronGroupHostAssocSchema(many = True)
