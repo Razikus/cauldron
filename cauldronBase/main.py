@@ -55,7 +55,6 @@ def getHosts(group):
         result = session.query(CauldronHost).all()
     session.commit()
     cauldronHostsSchema = CauldronHostSchema(many = True)
-    cauldronGroupHostAssocSchema = CauldronGroupHostAssocSchema(many = True)
     dump = cauldronHostsSchema.dump(result)
     return jsonify(dump.data)
 
@@ -75,7 +74,7 @@ def addHostToBase(session, hostName, groupName = None):
     session.add(host)
 
 def constructOKStatus():
-    return "OK"
+    return '{ "status" : "OK"}'
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=7777)

@@ -5,7 +5,8 @@ from Base import Base
 from helpers import to_json
 from Base import ma
 from marshmallow import fields
-#from CauldronGroupHostAssoc import CauldronGroupHostAssocSchema
+from CauldronGroup import CauldronGroupSchema
+from CauldronGroupHostAssoc import CauldronGroupHostAssocSchema
 
 class CauldronHost(Base):
     __tablename__ = "CauldronHost"
@@ -18,5 +19,5 @@ class CauldronHost(Base):
 class CauldronHostSchema(ma.Schema):
     class Meta:
         fields = ('id', 'ip', 'groups')
-    groups = ma.Nested("CauldronGroupHostAssocSchema", many = True)
+    groups = ma.Nested(CauldronGroupHostAssocSchema, many = True)
 

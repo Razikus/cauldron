@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from Base import Base
 from helpers import to_json
 from Base import ma
+from CauldronGroup import CauldronGroupSchema
 
 class CauldronGroupHostAssoc(Base):
     __tablename__ = "CauldronGroupHostAssoc"
@@ -16,6 +17,6 @@ class CauldronGroupHostAssoc(Base):
         return "CAULDRONGROUPHOSTASSOC: " + str(self.host_id) + ", " + str(self.group_id)
 
 class CauldronGroupHostAssocSchema(ma.Schema):
-    class Meta:
-        fields = ('host', 'group')
+    group = ma.Nested(CauldronGroupSchema, only = ["name"]) 
+    name = ma.Nested("CauldronHostSchema", only = ["name"]) 
 
