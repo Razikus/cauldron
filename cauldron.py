@@ -1,5 +1,6 @@
 import cli.app
 import requests
+import json
 from pprint import pprint
 
 configHost = "http://localhost"
@@ -47,9 +48,28 @@ def listFromBase(host, group):
     elif(host is not None and group is None):
         return listHostFromBase(host);
     elif(host is None and group is None):
-        return listHosts();
+        return formatToAnsible(listHosts());
     else:
         return listHostFromGroup(host, group)
+
+def formatToAnsible(jsonized):
+    data = {}
+    for item in jsonized:
+        groupsLen = len(item["groups"])
+        if(groupsLen == 0):
+            if("unassigned" not in data):
+                data["unassigned"] = [item["ip"]]
+            else:
+                data["unassigned"].append(item["ip"])
+        else:
+            for group in item["groups"]:
+                groupIn = group["group"]
+                if(groupIn["name"] not in data):
+                    data[groupIn["name"]] = [item["ip"]]
+                else:
+                    data[groupIn["name"]].append(item["ip"])
+    json_data = json.dumps(data)
+    return json_data
 
 def addToBase(host, group):
     if(group is not None and host is None):
