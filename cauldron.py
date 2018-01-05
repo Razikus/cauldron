@@ -1,3 +1,5 @@
+#!/usr/bin/python2.7
+
 import cli.app
 import requests
 import json
@@ -10,12 +12,11 @@ configURL = configHost + ":" + configPort
 
 @cli.app.CommandLineApp
 def cauldron(app):
-
     addFlag = app.params.add
     listFlag = app.params.list
     deleteFlag = app.params.delete
 
-    host = app.params.host
+    host = app.params.ip
     group = app.params.group
 
     if(checkForExclusive(addFlag, listFlag, deleteFlag)):
@@ -29,7 +30,7 @@ def cauldron(app):
     if addFlag:
         pprint(addToBase(host, group))
     elif listFlag:
-        pprint(listFromBase(host, group))
+        print listFromBase(host, group)
     elif deleteFlag:
         pprint(deleteFromBase(host, group))
     pass
@@ -96,7 +97,7 @@ def removeHostFromGroup(host, group):
     return host + " " + group
 
 def addGroupToBase(group):
-    return "Not implemented"
+    return jsonREQ(met = "POST", path = "group/" + group)
 def addHostToBase(host):
     return jsonREQ(met = "POST", path = "host/" + host)
 def addHostToGroup(host, group):
@@ -134,7 +135,7 @@ def jsonGET(**kwargs):
     url = configURL + "/" + relativePath
     return requests.get(url).json()
 
-cauldron.add_param("-host", "--host", help="provide host to the command", default = None)
+cauldron.add_param("-i", "--ip", help="provide host to the command", default = None)
 cauldron.add_param("-group", "--group", help="provide a group to the command", default = None)
 cauldron.add_param("-a", "--add", help="add host to the base", default = False, action = "store_true")
 cauldron.add_param("-l", "--list", help="lists for all avalaible hosts and groups", default = False, action = "store_true")
